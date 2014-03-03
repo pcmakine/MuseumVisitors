@@ -1,11 +1,29 @@
 <?php
+/**
+ * Has functions to find the maximum number of visitors and the time ranges
+ * 
+ * @package src
+ * @author Petri Mäkinen
+ */
 
+/**
+ * Uses Filereader.php to read the file and store its contents in an array
+ */
 require_once 'Filereader.php';
+
+/**
+ * Uses Minute_Strng_Converter.php to convert minutes to strings
+ */
 require_once 'Minute_String_Converter.php';
 
 /**
- * Has methods that can be used to find the maximum number of visitors and the
- * time ranges
+ * Finds the maximum number of visitors and the time ranges
+ * 
+ * Uses the Filereader to read the times from a file and saves the times in
+ * minutes in the _visitors array. Can then be used to find the maximum
+ * number of visitors and the time ranges.
+ * 
+ * @package src
  */
 class Visitor_Calculator {
 
@@ -25,7 +43,7 @@ class Visitor_Calculator {
      * minute.
      * @var array 
      */
-    private $_minuteArray = array();
+    private $_minuteArray;
     
     /**
      * The maximum number of visitors is saved in this variable
@@ -53,12 +71,27 @@ class Visitor_Calculator {
      */
     private $_firstArrival;
 
-    
+    /**
+     * Reads the visiting times from the file and constructs the object
+     * 
+     * Uses the Filereader class to read data from the file and to place it in
+     * the _visitors array
+     * @param string $filename  The name for the file where the visiting times
+     * are listed
+     */
     public function __construct($filename) {
         $reader = new Filereader($filename);
         $reader->readFileToArray($this->_visitors);
         $this->_max = 0;
         $this->_firstArrival = $this->_visitors[0]['arrival'];
+        
+        /*
+         * minuteArray needs to be filled with dummy values in order to be sure 
+         * that when we go through it in the end we will get correct results.
+         * 1440 is the number of minutes in 24 hours, so that will certainly be 
+         * enough
+         */
+        $this ->_minuteArray = array_fill(0, 1440, 0);
     }
 
     /**
@@ -104,12 +137,15 @@ class Visitor_Calculator {
     }
 
     /**
-     * Echos the maximum number of visitors and teh time ranges in standard
+     * Echos the maximum number of visitors and the time ranges in standard
      * output
      */
     public function printResults() {
         for ($i = 0; $i < count($this->_mostVisitorsStart); $i++) {
-            echo $this->_mostVisitorsStart[$i] . "-" . $this->_mostVisitorsEnd[$i] . ";" . $this->_max;
+            echo $this->_mostVisitorsStart[$i] . "-" . $this->_mostVisitorsEnd[$i] . ";" . $this->_max ;
+            if($i != count($this->_mostVisitorsStart)-1){
+                echo "\n";
+            }
         }
     }
 
