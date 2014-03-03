@@ -19,7 +19,8 @@ class Filereader {
      * @param type $filename The name of the file containing the visiting times
      */
     public function readFileToArray(&$visitors) {
-        $handle = fopen($this->_filename, "r");
+        $handle = fopen($this->_filename, "r")
+                or exit("Failed to open the file. Please check the filename and run the program again.");
         $i = 0;
 
         while ($userinfo = fscanf($handle, "%s")) {
