@@ -1,0 +1,30 @@
+The program can be started by running visitors.php. The actual algorithms
+to find the maximum number of visitors and the time ranges are in the file
+Visitor_Calculator.php. Before those are used, the times are read from the file
+and after converting them to minutes and sorting them according to the arrival
+time they are saved in an array called _visitors.
+
+The findMax() function finds the maximum number of simultaneous visitors
+in the museum by going through the _visitor array and marking in the 
+_minuteArray array how many visitors have been in the museum at each minute.
+
+In the _minuteArray array index zero is marking the time of the arrival of the
+first visitor. The next index marks the first arrival time + 1 minute, the next
+one marks the first arrival time + 2 minutes and so on. Therefore the
+algorithm starts at index current visitors arrival time - first arrival time and
+continues until index current visitor leaving time - first arrival time
+increasing the number by one in each index.
+
+After the findMax() algorithm has finished, the _minuteArray array's index i
+will have the number of visitors at time t0 + i where t0 = arrival time of the
+first visitor. The algorithm also saves the maximum numbers of visitors in
+variable _max and returns that value.
+
+The time ranges with the most visitors are found by using the findRanges() 
+function. The function goes through the _minuteArray and saves the
+beginning(s) and end(s) of the interval(s) with most visitors. The function
+determines that it has found a beginning of an interval if the value of the
+_minuteArray at the current index is the same as the maximum value of the 
+visitors and the current index is either in the beginning of the array or the
+value at the next index is not the same as the maximum value of the visitors. 
+Similar logic is being used to find the end(s) of the interval(s).
